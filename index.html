@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#121827">
+<title>REMOTE CHOICE</title>
+<style>
+:root{color-scheme:dark;--bg:#101522;--panel:#1a2333;--panel2:#222e42;--line:#35435b;--text:#f4f7fc;--muted:#9cabc1;--accent:#4385f5;--good:#38c990;--danger:#f06b75;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Malgun Gothic",sans-serif}body.light{--bg:#f2f5fa;--panel:#fff;--panel2:#eaf0f8;--line:#d3dce9;--text:#172033;--muted:#65738a;color-scheme:light}
+button,input,select,textarea{font:inherit}button{border:0;border-radius:11px;padding:11px 14px;background:var(--accent);color:white;font-weight:700;cursor:pointer}button.secondary{background:#52627c}button.danger{background:#bc4554}button.good{background:#18865f}button:disabled{opacity:.45;cursor:not-allowed}input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);margin:5px 0 12px}input[type=checkbox]{width:auto;margin:0 7px 0 0;accent-color:var(--accent)}input[type=color]{padding:3px;height:42px;max-width:64px}input[type=number]{max-width:130px}textarea{min-height:100px;resize:vertical}label{display:inline-flex;align-items:center;gap:4px;margin:5px 12px 5px 0}.top{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);padding:13px max(16px,calc((100vw - 1050px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:900;letter-spacing:.4px;color:#78aaff;font-size:20px}.connection{font-size:12px;color:var(--muted)}main{max-width:1050px;margin:auto;padding:18px}.screen{display:none}.screen.active{display:block}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px;margin:0 0 15px;min-width:0}.card h2{font-size:18px;margin:0 0 12px}.card h3{font-size:15px;margin:16px 0 6px}.muted{color:var(--muted);font-size:13px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.row>*{min-width:0}.between{display:flex;justify-content:space-between;align-items:center;gap:10px}.grow{flex:1}.pill{display:inline-block;border-radius:999px;background:var(--panel2);padding:4px 9px;font-size:12px;color:var(--muted)}.ok{color:var(--good)}.bad{color:var(--danger)}.hidden{display:none!important}.divider{border:0;border-top:1px solid var(--line);margin:15px 0}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.choice{min-height:100px;white-space:normal;overflow-wrap:anywhere;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:19px}.choice small{font-size:12px;font-weight:500;opacity:.9}.choice.round{border-radius:50%}.choice.square{border-radius:4px}.choice.compact{min-height:65px;padding:8px}.member,.feed,.result{padding:10px 11px;border-radius:10px;background:var(--panel2);margin:7px 0}.member{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.member select{max-width:130px;margin:0}.member button{padding:7px 10px;font-size:12px}.feed{font-size:13px}.result{display:flex;justify-content:space-between;gap:8px}.bar{height:8px;background:var(--line);border-radius:20px;overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;background:var(--accent)}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.tabs button{background:var(--panel2);color:var(--text)}.tabs button.active{background:var(--accent);color:white}.field{margin:8px 0}.field>label{font-size:13px;color:var(--muted);display:block}.choice-edit{display:grid;grid-template-columns:36px minmax(100px,1fr) 64px 110px 38px;gap:7px;align-items:center;margin:6px 0}.choice-edit input{margin:0}.choice-edit button{padding:8px}.statusline{padding:10px;background:var(--panel2);border-radius:10px;margin:8px 0}.footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}.notice{background:#344b72;border:1px solid #5278b4;border-radius:12px;padding:12px;margin:8px 0}.empty{color:var(--muted);padding:14px;text-align:center}.small{font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1}.section-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.statnum{font-size:25px;font-weight:800}.timer{font-size:20px;font-weight:800;color:#ffd477}
+@media(max-width:600px){main{padding:12px}.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.choice-edit{grid-template-columns:28px minmax(85px,1fr) 54px 85px 34px;gap:4px}.choice-edit input{padding:8px 6px}.top{padding:11px 13px}.choice{min-height:85px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">REMOTE CHOICE</div><div id="connection" class="connection">Firebase 연결 중...</div></header>
+<main>
+<section id="homeScreen" class="screen active">
+ <div class="card">
+  <h2>원격 선택지 게임</h2><p class="muted">방을 만들거나 방 코드로 참가하세요.</p>
+  <div class="field"><label for="myName">닉네임</label><input id="myName" maxlength="20" placeholder="닉네임" value="참가자"></div>
+  <div class="grid2"><button id="createRoomBtn">새 방 만들기</button><div><input id="roomCodeInput" maxlength="6" inputmode="numeric" placeholder="6자리 방 코드"><button id="joinRoomBtn" style="width:100%">방 참가</button></div></div>
+ </div>
+ <div class="card"><h2>접속 방식 안내</h2><p class="muted">출력자는 선택을 보내고, 입력자는 선택을 받습니다. 관전자는 공개된 결과만 볼 수 있습니다. 게임 중에도 참가할 수 있습니다.</p></div>
+</section>
+<section id="roomScreen" class="screen">
+ <div class="card">
+  <div class="between"><div><div class="muted">방 코드</div><div class="statnum" id="roomCodeLabel">------</div></div><div style="text-align:right"><div class="muted">내 역할</div><strong id="myRoleLabel">-</strong></div></div>
+  <div class="row" style="margin-top:10px"><span id="memberCount" class="pill">접속 0명</span><span id="roundLabel" class="pill">라운드 1</span><span id="statusLabel" class="pill">대기 중</span><span id="delayLabel" class="pill">지연시간 -</span></div>
+  <div class="actions" style="margin-top:10px"><button id="copyCodeBtn" class="secondary">코드 복사</button><button id="fullscreenBtn" class="secondary">전체 화면</button><button id="leaveBtn" class="danger">나가기</button></div>
+ </div>
+ <div id="noticeArea"></div>
+ <div class="card">
+  <div class="section-head"><h2>선택지</h2><span id="timerLabel" class="timer"></span></div>
+  <p id="gameHint" class="muted">게임이 시작되면 선택할 수 있습니다.</p>
+  <div id="choiceGrid" class="choice-grid"></div>
+  <div id="inputSignal" class="statusline hidden"></div>
+  <div id="batchStatus" class="statusline hidden"></div>
+ </div>
+ <div class="card"><h2>결과 및 통계</h2><div id="resultsArea"></div><div id="statsArea"></div></div>
+ <div class="card"><div class="section-head"><h2>참가자</h2><span id="onlineLabel" class="muted"></span></div><div id="membersArea"></div></div>
+ <div id="ownerPanel" class="card hidden">
+  <h2>방 관리 · 관리자 전용</h2>
+  <div class="actions"><button id="startBtn" class="good">게임 시작</button><button id="pauseBtn" class="secondary">일시 정지</button><button id="resumeBtn" class="good">재개</button><button id="endBtn" class="danger">게임 종료</button></div>
+  <div class="actions" style="margin-top:8px"><button id="newRoundBtn" class="secondary">새 라운드</button><button id="forceRevealBtn" class="secondary">결과 강제 공개</button><button id="latencyBtn" class="secondary">지연시간 측정</button></div>
+  <hr class="divider">
+  <h3>전체 공지</h3><div class="row"><input id="noticeInput" placeholder="공지 내용"><button id="sendNoticeBtn">전송</button></div>
+  <hr class="divider">
+  <div class="tabs"><button class="active" data-tab="gameSettings">게임 설정</button><button data-tab="designSettings">꾸미기</button><button data-tab="accessSettings">공개·참가</button><button data-tab="fileSettings">JSON·복사</button></div>
+  <div id="gameSettings" class="settingsTab">
+   <h3>선택지</h3><div class="row"><label for="choiceCount">개수</label><input id="choiceCount" type="number" min="2" max="100" value="4"><button id="resizeChoicesBtn" class="secondary">개수 적용</button></div>
+   <div id="choiceEditor"></div>
+   <div class="row"><button id="addChoiceBtn" class="secondary">선택지 추가</button><button id="saveChoicesBtn">선택지·설정 저장</button></div>
+   <h3>정렬</h3><select id="sortMode"><option value="custom">사용자 지정 순서</option><option value="number">번호순</option><option value="name">이름순</option><option value="random">무작위 순서</option></select>
+   <h3>선택 규칙</h3>
+   <label><input id="allowChange" type="checkbox">선택 변경 허용</label>
+   <label><input id="allowCancel" type="checkbox">선택 취소 허용</label>
+   <label><input id="allowDuplicate" type="checkbox" checked>같은 선택지 중복 선택 허용</label>
+   <label><input id="notifyEnabled" type="checkbox" checked>선택 알림</label>
+   <label><input id="soundEnabled" type="checkbox">알림 소리</label>
+   <h3>동기화 방식</h3><select id="syncMode"><option value="live">실시간 전송</option><option value="batch">모두 선택 후 일괄 공개</option></select>
+   <h3>선택 제한 시간 (초, 0은 제한 없음)</h3><input id="timeLimit" type="number" min="0" max="3600" value="0">
+   <h3>결과 공개 범위</h3><select id="resultScope"><option value="output">출력자 전용 (입력자는 수신 화면에서 확인)</option><option value="all">전체 공개</option></select>
+   <h3>통계 공개 범위</h3><select id="statsScope"><option value="owner">방 주인만</option><option value="all">전체 참가자</option><option value="input">입력자만</option></select>
+  </div>
+  <div id="designSettings" class="settingsTab hidden">
+   <h3>화면 테마</h3><select id="themeMode"><option value="dark">다크</option><option value="light">라이트</option></select>
+   <h3>버튼 모양</h3><select id="buttonShape"><option value="round">둥근 사각형</option><option value="square">각진 사각형</option><option value="circle">원형</option></select>
+   <h3>버튼 크기</h3><select id="buttonSize"><option value="normal">보통</option><option value="compact">작게</option><option value="large">크게</option></select>
+   <h3>배경 색상</h3><input id="backgroundColor" type="color" value="#101522">
+   <button id="saveDesignBtn">꾸미기 저장</button>
+  </div>
+  <div id="accessSettings" class="settingsTab hidden">
+   <h3>참가 인원 제한 (0은 제한 없음)</h3><input id="maxPlayers" type="number" min="0" max="500" value="100">
+   <h3>도중 참가</h3><label><input id="allowLateJoin" type="checkbox" checked>게임 중 참가 허용</label>
+   <h3>통계 재계산</h3><p class="muted">통계는 현재 라운드의 선택 데이터를 기준으로 방 주인이 계산해 공개합니다.</p>
+   <button id="saveAccessBtn">참가 설정 저장</button>
+  </div>
+  <div id="fileSettings" class="settingsTab hidden">
+   <h3>설정 JSON</h3><p class="muted">현재 방의 선택지·게임 규칙·꾸미기 설정만 저장합니다. 참가자, UID, 방 코드, 접속 정보는 포함하지 않습니다.</p>
+   <div class="actions"><button id="exportJsonBtn" class="secondary">JSON 파일 저장</button><button id="copyJsonBtn" class="secondary">JSON 복사</button></div>
+   <input id="jsonFileInput" type="file" accept=".json,application/json">
+   <textarea id="jsonText" placeholder="다른 방에서 복사한 JSON을 여기에 붙여넣고 적용하세요."></textarea>
+   <div class="actions"><button id="applyJsonBtn">JSON 설정 적용</button><button id="copyRoomSettingsBtn" class="secondary">현재 설정 복사</button></div>
+  </div>
+ </div>
+ <div class="card"><h2>전달 기록</h2><div id="eventFeed" class="muted">아직 기록이 없습니다.</div></div>
+</section>
+</main>
+<div class="footer">REMOTE CHOICE · HTML / CSS / JavaScript · Firebase Realtime Database</div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import {getDatabase,ref,get,set,update,remove,push,onValue,onDisconnect,runTransaction,serverTimestamp,query,limitToLast} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+// Firebase 설정: 사용자가 제공한 프로젝트 설정
+const firebaseConfig={
+ apiKey:"AIzaSyDArGtDypSSmWo6BiTHdQBaK5JeIkN0v14",
+ authDomain:"miniboardgame-25324.firebaseapp.com",
+ databaseURL:"https://miniboardgame-25324-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId:"miniboardgame-25324",
+ storageBucket:"miniboardgame-25324.firebasestorage.app",
+ messagingSenderId:"937903418490",
+ appId:"1:937903418490:web:723c9d64bdecb0fe0c5fc3"
+};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);
+const $=id=>document.getElementById(id);
+const state={uid:null,room:null,role:null,ownerUid:null,public:null,settings:null,members:{},signals:{},pending:{},events:{},notices:{},stats:null,round:1,unsubs:[],roundUnsubs:[],selected:null,startedAt:0,clock:null,presenceUnsub:null,pingUnsub:null,lastNoticeCount:0,lastEventCount:0,randomOrder:[],statsWriteBusy:false};
+const roleNames={output:"출력자",input:"입력자",viewer:"관전자"};
+const defaultSettings=()=>({
+ choices:[{id:"c1",name:"선택지 1",color:"#3478f6"},{id:"c2",name:"선택지 2",color:"#e65a55"},{id:"c3",name:"선택지 3",color:"#259b70"},{id:"c4",name:"선택지 4",color:"#8b61c9"}],
+ sortMode:"custom",syncMode:"live",allowChange:true,allowCancel:true,allowDuplicate:true,notifyEnabled:true,soundEnabled:false,
+ resultScope:"all",statsScope:"owner",timeLimit:0,themeMode:"dark",buttonShape:"round",buttonSize:"normal",backgroundColor:"#101522",maxPlayers:100,allowLateJoin:true
+});
+const roomPath=(...parts)=>ref(db,["rooms",state.room,...parts].join("/"));
+const isOwner=()=>!!state.uid&&state.ownerUid===state.uid;
+const onlineMembers=()=>Object.values(state.members||{}).filter(m=>m&&m.online);
+const outputMembers=()=>onlineMembers().filter(m=>m.role==="output");
+function say(text){console.info("REMOTE CHOICE:",text);}
+function showScreen(which){$("homeScreen").classList.toggle("active",which==="home");$("roomScreen").classList.toggle("active",which==="room");}
+function setConnection(text,good=false){$("connection").textContent=text;$("connection").style.color=good?"var(--good)":"var(--muted)";}
+function cleanListeners(){[...state.unsubs,...state.roundUnsubs].forEach(fn=>{try{fn()}catch{}});state.unsubs=[];state.roundUnsubs=[];if(state.clock){clearInterval(state.clock);state.clock=null;}if(state.presenceUnsub){state.presenceUnsub();state.presenceUnsub=null;}if(state.pingUnsub){state.pingUnsub();state.pingUnsub=null;}}
+function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function currentRoundPath(...parts){return roomPath("rounds",String(state.round),...parts);}
+function toast(msg){alert(msg);}
+function applyTheme(){document.body.classList.toggle("light",state.settings?.themeMode==="light");if(state.settings?.backgroundColor)document.body.style.background=state.settings.backgroundColor;}
+function makeCode(){return String(Math.floor(100000+Math.random()*900000));}
+function validName(){const n=$("myName").value.trim().slice(0,20);return n||"참가자";}
+
+async function init(){
+ try{await signInAnonymously(auth);}
+ catch(e){setConnection("인증 오류");toast("Firebase 익명 인증에 실패했어요. Firebase Authentication에서 익명 로그인을 켜 주세요.\n"+e.message);}
+}
+onAuthStateChanged(auth,user=>{if(user){state.uid=user.uid;setConnection("Firebase 인증됨",true);}else{state.uid=null;setConnection("로그인 대기");}});
+
+async function createRoom(){
+ if(!state.uid)return toast("Firebase 인증을 기다려 주세요.");
+ try{
+  let code="",found=false;
+  for(let i=0;i<15;i++){const candidate=makeCode();const snap=await get(ref(db,"rooms/"+candidate+"/public"));if(!snap.exists()){code=candidate;found=true;break;}}
+  if(!found)throw new Error("사용 가능한 방 코드를 만들지 못했습니다.");
+  const settings=defaultSettings();
+  const updates={};
+  updates[`rooms/${code}/public`]={ownerUid:state.uid,status:"waiting",currentRound:1,createdAt:Date.now()};
+  updates[`rooms/${code}/settings`]=settings;
+  updates[`rooms/${code}/members/${state.uid}`]={uid:state.uid,name:validName(),role:"output",online:true,joinedAt:Date.now()};
+  await update(ref(db),updates);
+  await enterRoom(code);
+ }catch(e){toast("방 생성 실패: "+e.message);}
+}
+async function joinRoom(){
+ if(!state.uid)return toast("Firebase 인증을 기다려 주세요.");
+ const code=$("roomCodeInput").value.trim();if(!/^\d{6}$/.test(code))return toast("6자리 방 코드를 입력해 주세요.");
+ try{
+  const ps=await get(ref(db,`rooms/${code}/public`));if(!ps.exists())return toast("해당 방을 찾을 수 없습니다.");
+  const pub=ps.val();if(pub.status==="ended")return toast("종료된 방입니다.");
+  const ms=await get(ref(db,`rooms/${code}/members/${state.uid}`));
+  if(ms.exists()){await enterRoom(code);return;}
+  const settingsSnap=await get(ref(db,`rooms/${code}/settings`));const settings=settingsSnap.val()||defaultSettings();
+  if(pub.status!=="waiting"&&!settings.allowLateJoin)return toast("이 방은 도중 참가를 허용하지 않습니다.");
+  const role=await chooseJoinRole();if(!role)return;
+  await set(ref(db,`rooms/${code}/members/${state.uid}`),{uid:state.uid,name:validName(),role,online:true,joinedAt:Date.now()});
+  await enterRoom(code);
+ }catch(e){toast("방 참가 실패: "+e.message);}
+}
+function chooseJoinRole(){const raw=prompt("참가 역할을 입력하세요.\n1 = 출력자\n2 = 입력자\n3 = 관전자","1");if(raw===null)return null;return ({"1":"output","2":"input","3":"viewer"})[raw.trim()]||null;}
+
+async function enterRoom(code){
+ cleanListeners();state.room=code;state.role=null;state.public=null;state.settings=null;state.members={};state.signals={};state.pending={};state.events={};state.notices={};state.stats=null;state.selected=null;
+ $("roomCodeLabel").textContent=code;showScreen("room");
+ const memberRef=roomPath("members",state.uid);
+ state.unsubs.push(onValue(memberRef,s=>{if(!s.exists()){toast("방에서 나갔거나 추방되었습니다.");leaveLocal();return;}const me=s.val();state.role=me.role;renderRoom();}));
+ state.unsubs.push(onValue(roomPath("public"),s=>{if(!s.exists()){toast("방이 삭제되었습니다.");leaveLocal();return;}const prevRound=state.round;state.public=s.val();state.ownerUid=state.public.ownerUid;state.round=Number(state.public.currentRound||1);if(prevRound!==state.round||state.roundUnsubs.length===0)attachRoundListeners();renderRoom();}));
+ state.unsubs.push(onValue(roomPath("settings"),s=>{state.settings=s.val()||defaultSettings();applyTheme();renderRoom();}));
+ state.unsubs.push(onValue(roomPath("members"),s=>{state.members=s.val()||{};renderRoom();scheduleStats();}));
+ state.unsubs.push(onValue(roomPath("notices"),s=>{const data=s.val()||{};const arr=Object.values(data).sort((a,b)=>(a.time||0)-(b.time||0));if(arr.length>state.lastNoticeCount&&state.lastNoticeCount>0&&state.settings?.notifyEnabled)notifyUser("새 공지",arr[arr.length-1]?.text||"새 공지가 도착했습니다.");state.lastNoticeCount=arr.length;state.notices=data;renderNotices();}));
+ state.unsubs.push(onValue(roomPath("stats"),s=>{state.stats=s.val();renderStats();}));
+ state.unsubs.push(onValue(roomPath("pings"),s=>handlePings(s.val()||{})));
+ const connectedRef=ref(db,".info/connected");state.presenceUnsub=onValue(connectedRef,async snap=>{if(snap.val()===true&&state.room){const onlineRef=roomPath("members",state.uid,"online");try{await onDisconnect(onlineRef).set(false);await set(onlineRef,true);}catch(e){console.warn("presence",e);}}});
+ renderRoom();
+}
+function attachRoundListeners(){
+ state.roundUnsubs.forEach(fn=>fn());state.roundUnsubs=[];state.signals={};state.pending={};state.events={};
+ const sigPath=currentRoundPath("signals"),pendingPath=currentRoundPath("pending"),eventPath=currentRoundPath("events");
+ state.roundUnsubs.push(onValue(sigPath,s=>{state.signals=s.val()||{};renderRoom();scheduleStats();}));
+ state.roundUnsubs.push(onValue(pendingPath,s=>{state.pending=s.val()||{};renderRoom();scheduleStats();}));
+ state.roundUnsubs.push(onValue(query(eventPath,limitToLast(60)),s=>{state.events=s.val()||{};renderFeed();}));
+}
+function notifyUser(title,body){
+ if(!state.settings?.notifyEnabled)return;
+ if(state.settings?.soundEnabled){try{const ctx=new AudioContext(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.frequency.value=740;gain.gain.value=.04;osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.12);}catch{}}
+ if("Notification" in window&&Notification.permission==="granted"&&document.hidden){new Notification(title,{body});}
+}
+async function requestNotifications(){if("Notification" in window&&Notification.permission==="default"){try{await Notification.requestPermission();}catch{}}}
+function allBatchReady(){const outs=outputMembers();return outs.length>0&&outs.every(m=>state.pending[m.uid]?.choiceId);}
+function orderedChoices(){const s=state.settings||defaultSettings();let arr=[...(s.choices||[])];if(s.sortMode==="name")arr.sort((a,b)=>a.name.localeCompare(b.name,"ko"));else if(s.sortMode==="number")arr.sort((a,b)=>Number(a.id.replace(/\D/g,""))-Number(b.id.replace(/\D/g,"")));else if(s.sortMode==="random")arr.sort((a,b)=>(a.randomKey||0)-(b.randomKey||0));return arr;}
+function canViewPublicResults(){return isOwner()||state.role==="output"||state.settings?.resultScope==="all";}
+function canViewStats(){return isOwner()||state.settings?.statsScope==="all"||(state.settings?.statsScope==="input"&&state.role==="input");}
+function renderRoom(){
+ if(!state.room)return;const s=state.settings||defaultSettings(),p=state.public||{};
+ $("myRoleLabel").textContent=roleNames[state.role]||"확인 중";$("roundLabel").textContent="라운드 "+state.round;$("statusLabel").textContent=({waiting:"대기 중",running:"진행 중",paused:"일시 정지",ended:"종료"})[p.status]||"대기 중";
+ const online=onlineMembers();$("memberCount").textContent=`접속 ${online.length}명`;$("onlineLabel").textContent=`전체 ${Object.keys(state.members||{}).length}명 · 온라인 ${online.length}명`;
+ $("ownerPanel").classList.toggle("hidden",!isOwner());$("startBtn").disabled=!isOwner()||p.status==="running";$("pauseBtn").disabled=!isOwner()||p.status!=="running";$("resumeBtn").disabled=!isOwner()||p.status!=="paused";$("endBtn").disabled=!isOwner()||p.status==="ended";
+ renderChoices();renderMembers();renderResults();renderStats();renderNotices();if(isOwner())loadSettingsForm();updateTimer();
+}
+function renderChoices(){
+ const box=$("choiceGrid");box.innerHTML="";const s=state.settings||defaultSettings();const live=state.signals?.[state.uid];state.selected=live?.choiceId||state.pending?.[state.uid]?.choiceId||null;
+ const canChoose=state.role==="output"&&state.public?.status==="running"&&(!s.timeLimit||Date.now()<(Number(state.public.startedAt||0)+s.timeLimit*1000));
+ $("gameHint").textContent=state.role==="output"?(canChoose?(s.syncMode==="live"?"선택하면 입력자에게 즉시 전달됩니다.":"선택을 저장하고, 온라인 출력자가 모두 고르면 한꺼번에 공개됩니다."):"게임 시작 후 선택할 수 있습니다."):state.role==="input"?"출력자의 선택을 받는 중입니다.":"관전자 모드입니다.";
+ for(const c of orderedChoices()){
+  const b=document.createElement("button");b.className="choice "+(s.buttonShape==="circle"?"round":s.buttonShape==="square"?"square":"");if(s.buttonSize==="compact")b.classList.add("compact");if(s.buttonSize==="large")b.style.minHeight="130px";
+  b.style.background=c.color||"#3478f6";b.innerHTML=`<span>${safe(c.name)}</span><small>${safe(c.description||"")}</small>`;
+  b.disabled=!canChoose;b.style.outline=(state.selected===c.id)?"3px solid white":"none";b.onclick=()=>sendChoice(c.id);box.appendChild(b);
+ }
+ const input=$("inputSignal");input.classList.toggle("hidden",state.role!=="input");if(state.role==="input")input.textContent="수신 중인 출력자: "+Object.values(state.signals).filter(x=>x?.choiceId).map(x=>`${x.name||"참가자"}: ${x.choiceName}`).join(" · ")||"아직 선택이 없습니다.";
+ const bs=$("batchStatus");const batch=s.syncMode==="batch";bs.classList.toggle("hidden",!batch);if(batch){const outs=outputMembers();bs.textContent=allBatchReady()?`일괄 공개 완료 · ${outs.length}명 선택`:`선택 완료 ${outs.filter(m=>state.pending[m.uid]?.choiceId).length}/${outs.length}명 · 모두 선택하면 공개됩니다.`;}
+}
+async function acquireLock(choiceId){const lockRef=currentRoundPath("locks",choiceId);const result=await runTransaction(lockRef,current=>{if(!current||current.uid===state.uid)return {uid:state.uid,time:Date.now()};return;},{applyLocally:false});return result.committed;}
+async function sendChoice(choiceId){
+ const s=state.settings||defaultSettings();if(state.role!=="output"||state.public?.status!=="running")return;
+ const base=s.syncMode==="batch"?"pending":"signals";const ownRef=currentRoundPath(base,state.uid);const snap=await get(ownRef);const old=snap.val()||null;const cancelling=old?.choiceId===choiceId;
+ if(cancelling&&!s.allowCancel)return toast("선택 취소가 꺼져 있습니다.");if(old?.choiceId&&old.choiceId!==choiceId&&!s.allowChange)return toast("선택 변경이 꺼져 있습니다.");
+ const nextChoice=cancelling?null:choiceId;
+ try{
+  if(nextChoice&&!s.allowDuplicate){const ok=await acquireLock(nextChoice);if(!ok)return toast("이미 다른 참가자가 선택한 선택지입니다.");}
+  if(old?.choiceId&&!s.allowDuplicate&&old.choiceId!==nextChoice)await remove(currentRoundPath("locks",old.choiceId));
+  if(!nextChoice){await remove(ownRef);if(s.syncMode==="live")await set(push(currentRoundPath("events")),{type:"cancel",uid:state.uid,name:state.members[state.uid]?.name||"참가자",time:Date.now()});}
+  else{
+   const choice=s.choices.find(c=>c.id===nextChoice);if(!choice)throw new Error("선택지가 존재하지 않습니다.");
+   const data={uid:state.uid,name:state.members[state.uid]?.name||"참가자",choiceId:nextChoice,choiceName:choice.name,time:Date.now()};
+   await set(ownRef,data);
+   if(s.syncMode==="live")await set(push(currentRoundPath("events")),{type:"choice",...data});
+  }
+  notifyUser("선택 업데이트",nextChoice?"선택이 전송되었습니다.":"선택이 취소되었습니다.");
+ }catch(e){toast("선택 전송 실패: "+e.message);}
+}
+function renderResults(){
+ const box=$("resultsArea");box.innerHTML="";const s=state.settings||defaultSettings();
+ const canView=state.role==="input"||canViewPublicResults();if(!canView){box.innerHTML='<div class="empty">현재 결과는 출력자에게만 공개됩니다.</div>';return;}
+ let records={};if(s.syncMode==="batch"){if(allBatchReady())records=state.pending;else{box.innerHTML='<div class="empty">모든 온라인 출력자가 선택하면 결과가 한꺼번에 공개됩니다.</div>';return;}}else records=state.signals;
+ const list=Object.values(records).filter(x=>x?.choiceId);if(!list.length){box.innerHTML='<div class="empty">아직 선택 결과가 없습니다.</div>';return;}
+ list.forEach(x=>{const d=document.createElement("div");d.className="result";d.innerHTML=`<span>${safe(x.name||"참가자")}</span><strong>${safe(x.choiceName||"선택")}</strong>`;box.appendChild(d);});
+}
+function renderStats(){
+ const box=$("statsArea");if(!box)return;box.innerHTML="";if(!canViewStats())return;
+ const s=state.settings||defaultSettings();let records=s.syncMode==="batch"?(allBatchReady()?state.pending:{}):state.signals;const selected=Object.values(records).filter(x=>x?.choiceId);const total=selected.length;
+ const heading=document.createElement("h3");heading.textContent=`통계 · 선택 ${total}명`;box.appendChild(heading);
+ for(const c of s.choices||[]){const count=selected.filter(x=>x.choiceId===c.id).length;const pct=total?Math.round(count/total*100):0;const row=document.createElement("div");row.innerHTML=`<div class="between"><span>${safe(c.name)}</span><strong>${count}명 · ${pct}%</strong></div><div class="bar"><span style="width:${pct}%"></span></div>`;box.appendChild(row);}
+ const unselected=Math.max(0,outputMembers().length-total);const p=document.createElement("p");p.className="muted";p.textContent=`미선택 ${unselected}명`;box.appendChild(p);
+}
+function renderMembers(){
+ const box=$("membersArea");box.innerHTML="";
+ Object.values(state.members||{}).sort((a,b)=>(a.joinedAt||0)-(b.joinedAt||0)).forEach(m=>{
+  const row=document.createElement("div");row.className="member";const left=document.createElement("span");left.innerHTML=`${safe(m.name||"참가자")} ${m.uid===state.ownerUid?'<span class="pill">방 주인</span>':''} <span class="${m.online?'ok':'muted'}">${m.online?'● 온라인':'○ 오프라인'}</span>`;row.appendChild(left);
+  if(isOwner()&&m.uid!==state.uid){const select=document.createElement("select");["output","input","viewer"].forEach(role=>{const o=document.createElement("option");o.value=role;o.textContent=roleNames[role];o.selected=m.role===role;select.appendChild(o);});select.onchange=()=>changeRole(m.uid,select.value);row.appendChild(select);const transfer=document.createElement("button");transfer.className="secondary";transfer.textContent="관리자 양도";transfer.onclick=()=>transferOwner(m.uid);row.appendChild(transfer);const kick=document.createElement("button");kick.className="danger";kick.textContent="추방";kick.onclick=()=>kickMember(m.uid);row.appendChild(kick);}
+  box.appendChild(row);
+ });
+}
+async function changeRole(uid,role){if(!isOwner())return;try{await set(roomPath("members",uid,"role"),role);}catch(e){toast("역할 변경 실패: "+e.message);}}
+async function kickMember(uid){if(!isOwner()||!confirm("이 참가자를 방에서 내보낼까요?"))return;try{await remove(roomPath("members",uid));await remove(roomPath("rounds",String(state.round),"signals",uid));await remove(roomPath("rounds",String(state.round),"pending",uid));}catch(e){toast("추방 실패: "+e.message);}}
+async function transferOwner(uid){if(!isOwner()||!confirm("방 주인 권한을 양도할까요? 양도 후에는 새 방 주인만 관리할 수 있습니다."))return;try{await set(roomPath("public","ownerUid"),uid);toast("관리자 권한을 양도했습니다.");}catch(e){toast("양도 실패: "+e.message);}}
+function renderNotices(){const box=$("noticeArea");box.innerHTML="";Object.values(state.notices||{}).sort((a,b)=>(b.time||0)-(a.time||0)).slice(0,3).forEach(n=>{const d=document.createElement("div");d.className="notice";d.textContent="📢 "+n.text;box.appendChild(d);});}
+function renderFeed(){const box=$("eventFeed");box.innerHTML="";if(!canViewPublicResults()){box.textContent="기록은 출력자에게만 공개됩니다.";return;}const arr=Object.values(state.events||{}).sort((a,b)=>(b.time||0)-(a.time||0));if(!arr.length){box.textContent="아직 기록이 없습니다.";return;}arr.slice(0,40).forEach(e=>{const d=document.createElement("div");d.className="feed";d.textContent=e.type==="cancel"?`${e.name||"참가자"}: 선택 취소`:`${e.name||"참가자"}: ${e.choiceName||"선택"}`;box.appendChild(d);});}
+function scheduleStats(){if(!isOwner()||state.statsWriteBusy)return;state.statsWriteBusy=true;setTimeout(async()=>{try{const s=state.settings||defaultSettings();const records=s.syncMode==="batch"?state.pending:state.signals;const counts={};(s.choices||[]).forEach(c=>counts[c.id]=0);Object.values(records||{}).forEach(x=>{if(x?.choiceId&&counts[x.choiceId]!==undefined)counts[x.choiceId]++;});await set(roomPath("stats"),{round:state.round,total:Object.values(records||{}).filter(x=>x?.choiceId).length,counts,updatedAt:Date.now()});}catch(e){console.warn("stats",e);}finally{state.statsWriteBusy=false;}},250);}
+function loadSettingsForm(){if(!isOwner()||!state.settings)return;const s=state.settings;
+ $("choiceCount").value=s.choices?.length||4;$("sortMode").value=s.sortMode||"custom";$("allowChange").checked=!!s.allowChange;$("allowCancel").checked=!!s.allowCancel;$("allowDuplicate").checked=!!s.allowDuplicate;$("notifyEnabled").checked=!!s.notifyEnabled;$("soundEnabled").checked=!!s.soundEnabled;$("syncMode").value=s.syncMode||"live";$("timeLimit").value=s.timeLimit||0;$("resultScope").value=s.resultScope||"all";$("statsScope").value=s.statsScope||"owner";
+ $("themeMode").value=s.themeMode||"dark";$("buttonShape").value=s.buttonShape||"round";$("buttonSize").value=s.buttonSize||"normal";$("backgroundColor").value=s.backgroundColor||"#101522";$("maxPlayers").value=s.maxPlayers??100;$("allowLateJoin").checked=s.allowLateJoin!==false;
+ const editor=$("choiceEditor");if(editor.dataset.key!==JSON.stringify(s.choices)){editor.dataset.key=JSON.stringify(s.choices);editor.innerHTML="";(s.choices||[]).forEach((c,i)=>{const row=document.createElement("div");row.className="choice-edit";row.innerHTML=`<span>${i+1}</span><input class="cname" maxlength="40" value="${safe(c.name)}" aria-label="선택지 이름"><input class="ccolor" type="color" value="${safe(c.color||"#3478f6")}" aria-label="색상"><input class="cdesc" maxlength="60" placeholder="설명" value="${safe(c.description||"")}"><button class="danger cdelete" title="삭제">×</button>`;row.querySelector(".cdelete").onclick=()=>{if($('choiceEditor').children.length<=2)return toast("선택지는 최소 2개가 필요합니다.");row.remove();[...editor.children].forEach((x,j)=>x.firstElementChild.textContent=j+1);$("choiceCount").value=editor.children.length;};editor.appendChild(row);});}
+}
+function readChoiceEditor(){return [...$("choiceEditor").children].map((row,i)=>({id:state.settings?.choices?.[i]?.id||("c"+crypto.randomUUID().slice(0,8)),name:row.querySelector(".cname").value.trim()||`선택지 ${i+1}`,color:row.querySelector(".ccolor").value,description:row.querySelector(".cdesc").value.trim()}));}
+async function saveGameSettings(){if(!isOwner())return;const choices=readChoiceEditor();if(choices.length<2||choices.length>100)return toast("선택지는 2~100개로 설정하세요.");const s={...state.settings,choices,sortMode:$("sortMode").value,allowChange:$("allowChange").checked,allowCancel:$("allowCancel").checked,allowDuplicate:$("allowDuplicate").checked,notifyEnabled:$("notifyEnabled").checked,soundEnabled:$("soundEnabled").checked,syncMode:$("syncMode").value,timeLimit:Math.max(0,Math.min(3600,Number($("timeLimit").value)||0)),resultScope:$("resultScope").value,statsScope:$("statsScope").value};try{await set(roomPath("settings"),s);await requestNotifications();toast("게임 설정을 저장했습니다.");}catch(e){toast("저장 실패: "+e.message);}}
+async function resizeEditor(){let count=Math.max(2,Math.min(100,Number($("choiceCount").value)||4));const old=readChoiceEditor();while(old.length<count)old.push({id:"c"+crypto.randomUUID().slice(0,8),name:"선택지 "+(old.length+1),color:"#3478f6",description:""});const choices=old.slice(0,count);state.settings={...state.settings,choices};$("choiceEditor").dataset.key="";loadSettingsForm();}
+async function addChoice(){if($("choiceEditor").children.length>=100)return toast("최대 100개까지 가능합니다.");const old=readChoiceEditor();old.push({id:"c"+crypto.randomUUID().slice(0,8),name:"선택지 "+(old.length+1),color:"#3478f6",description:""});state.settings={...state.settings,choices:old};$("choiceEditor").dataset.key="";loadSettingsForm();$("choiceCount").value=old.length;}
+async function saveDesign(){if(!isOwner())return;try{await update(roomPath("settings"),{themeMode:$("themeMode").value,buttonShape:$("buttonShape").value,buttonSize:$("buttonSize").value,backgroundColor:$("backgroundColor").value});toast("꾸미기를 저장했습니다.");}catch(e){toast("저장 실패: "+e.message);}}
+async function saveAccess(){if(!isOwner())return;try{await update(roomPath("settings"),{maxPlayers:Math.max(0,Math.min(500,Number($("maxPlayers").value)||0)),allowLateJoin:$("allowLateJoin").checked});toast("참가 설정을 저장했습니다.");}catch(e){toast("저장 실패: "+e.message);}}
+function settingsDocument(){return {format:"REMOTE_CHOICE_SETTINGS",version:2,settings:state.settings};}
+function downloadJson(){const blob=new Blob([JSON.stringify(settingsDocument(),null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="remote-choice-settings.json";a.click();URL.revokeObjectURL(url);}
+async function copyJson(){const value=JSON.stringify(settingsDocument(),null,2);$("jsonText").value=value;try{await navigator.clipboard.writeText(value);toast("설정 JSON을 복사했습니다.");}catch{toast("JSON 입력창에 설정을 넣었습니다. 직접 복사해도 됩니다.");}}
+async function applyJsonObject(doc){if(!isOwner())return;if(doc?.format!=="REMOTE_CHOICE_SETTINGS"||!doc.settings||!Array.isArray(doc.settings.choices))throw new Error("REMOTE CHOICE 설정 파일이 아닙니다.");if(doc.settings.choices.length<2||doc.settings.choices.length>100)throw new Error("선택지 개수는 2~100개여야 합니다.");const safeSettings={...defaultSettings(),...doc.settings,choices:doc.settings.choices.map((c,i)=>({id:String(c.id||("c"+i)).slice(0,30),name:String(c.name||`선택지 ${i+1}`).slice(0,40),color:/^#[0-9a-fA-F]{6}$/.test(c.color)?c.color:"#3478f6",description:String(c.description||"").slice(0,60)}))};await set(roomPath("settings"),safeSettings);}
+async function applyJsonText(){try{const doc=JSON.parse($("jsonText").value);await applyJsonObject(doc);toast("JSON 설정을 적용했습니다.");}catch(e){toast("JSON 적용 실패: "+e.message);}}
+async function importJsonFile(file){try{const doc=JSON.parse(await file.text());await applyJsonObject(doc);toast("JSON 파일을 적용했습니다.");}catch(e){toast("파일 적용 실패: "+e.message);}}
+async function startGame(){if(!isOwner())return;try{await update(roomPath("public"),{status:"running",startedAt:Date.now()});}catch(e){toast("시작 실패: "+e.message);}}
+async function setGameStatus(status){if(!isOwner())return;try{await update(roomPath("public"),{status});}catch(e){toast("상태 변경 실패: "+e.message);}}
+async function newRound(){if(!isOwner()||!confirm("새 라운드를 시작할까요? 현재 라운드 기록은 남습니다."))return;try{await update(roomPath("public"),{currentRound:state.round+1,status:"running",startedAt:Date.now()});}catch(e){toast("새 라운드 실패: "+e.message);}}
+async function forceReveal(){if(!isOwner())return;try{await update(roomPath("public"),{forceRevealRound:state.round});toast("현재 라운드 결과를 공개하도록 설정했습니다.");}catch(e){toast("공개 실패: "+e.message);}}
+async function sendNotice(){if(!isOwner())return;const text=$("noticeInput").value.trim().slice(0,300);if(!text)return;try{await set(push(roomPath("notices")),{text,time:Date.now(),from:state.uid});$("noticeInput").value="";}catch(e){toast("공지 전송 실패: "+e.message);}}
+function updateTimer(){const s=state.settings||defaultSettings(),p=state.public||{};if(!s.timeLimit||p.status!=="running"){$("timerLabel").textContent="";return;}const left=Math.max(0,Math.ceil((Number(p.startedAt||0)+s.timeLimit*1000-Date.now())/1000));$("timerLabel").textContent=left+"초";if(left===0&&isOwner()&&p.status==="running")setGameStatus("paused");}
+function startClock(){if(state.clock)clearInterval(state.clock);state.clock=setInterval(updateTimer,500);}
+async function measureLatency(){if(!isOwner())return;const inputs=onlineMembers().filter(m=>m.role==="input");if(!inputs.length)return toast("온라인 입력자가 없습니다.");const now=Date.now();for(const m of inputs){await set(push(roomPath("pings")),{fromUid:state.uid,toUid:m.uid,sentAt:now,round:state.round});}toast("입력 기기에 지연시간 측정 신호를 보냈습니다.");}
+async function handlePings(data){if(!state.room)return;const entries=Object.entries(data).slice(-30);for(const [key,p] of entries){if(p.toUid===state.uid&&!p.responseAt&&state.role==="input"){try{await update(roomPath("pings",key),{responseAt:Date.now()});}catch{}}if(p.fromUid===state.uid&&p.responseAt){const ms=Math.max(0,p.responseAt-p.sentAt);$("delayLabel").textContent=`왕복 ${ms}ms · 편도 예상 ${Math.round(ms/2)}ms`;}}}
+async function leaveLocal(){cleanListeners();state.room=null;state.role=null;state.ownerUid=null;state.public=null;state.settings=null;state.members={};state.signals={};state.pending={};state.events={};state.notices={};state.stats=null;showScreen("home");}
+async function leaveRoom(){if(!state.room)return;try{await set(roomPath("members",state.uid,"online"),false);}catch(e){console.warn(e);}await leaveLocal();}
+
+// 화면 이벤트
+$("createRoomBtn").onclick=createRoom;$("joinRoomBtn").onclick=joinRoom;$("copyCodeBtn").onclick=async()=>{try{await navigator.clipboard.writeText(state.room);toast("방 코드를 복사했습니다.");}catch{toast("방 코드: "+state.room);}};
+$("leaveBtn").onclick=leaveRoom;$("startBtn").onclick=startGame;$("pauseBtn").onclick=()=>setGameStatus("paused");$("resumeBtn").onclick=()=>setGameStatus("running");$("endBtn").onclick=()=>setGameStatus("ended");$("newRoundBtn").onclick=newRound;$("forceRevealBtn").onclick=forceReveal;$("latencyBtn").onclick=measureLatency;$("sendNoticeBtn").onclick=sendNotice;
+$("saveChoicesBtn").onclick=saveGameSettings;$("resizeChoicesBtn").onclick=resizeEditor;$("addChoiceBtn").onclick=addChoice;$("saveDesignBtn").onclick=saveDesign;$("saveAccessBtn").onclick=saveAccess;
+$("exportJsonBtn").onclick=downloadJson;$("copyJsonBtn").onclick=copyJson;$("applyJsonBtn").onclick=applyJsonText;$("copyRoomSettingsBtn").onclick=copyJson;$("jsonFileInput").onchange=e=>{const f=e.target.files?.[0];if(f)importJsonFile(f);e.target.value="";};
+$("fullscreenBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen();}catch(e){toast("전체 화면을 사용할 수 없습니다.");}};
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".settingsTab").forEach(x=>x.classList.toggle("hidden",x.id!==b.dataset.tab));});
+startClock();init();
+</script>
+</body>
+</html>
