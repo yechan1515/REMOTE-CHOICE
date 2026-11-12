@@ -89,9 +89,9 @@ button,input,select,textarea{font:inherit}button{border:0;border-radius:11px;pad
 </main>
 <div class="footer">REMOTE CHOICE · HTML / CSS / JavaScript · Firebase Realtime Database</div>
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import {getDatabase,ref,get,set,update,remove,push,onValue,onDisconnect,runTransaction,serverTimestamp,query,limitToLast} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getDatabase,ref,get,set,update,remove,push,onValue,onDisconnect,runTransaction,serverTimestamp,query,limitToLast} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 // Firebase 설정: 사용자가 제공한 프로젝트 설정
 const firebaseConfig={
@@ -129,7 +129,7 @@ function validName(){const n=$("myName").value.trim().slice(0,20);return n||"참
 
 async function init(){
  try{await signInAnonymously(auth);}
- catch(e){setConnection("인증 오류");toast("Firebase 익명 인증에 실패했어요. Firebase Authentication에서 익명 로그인을 켜 주세요.\n"+e.message);}
+ catch(e){setConnection("인증 오류");toast("Firebase 인증에 실패했어요.\n"+e.message);}
 }
 onAuthStateChanged(auth,user=>{if(user){state.uid=user.uid;setConnection("Firebase 인증됨",true);}else{state.uid=null;setConnection("로그인 대기");}});
 
