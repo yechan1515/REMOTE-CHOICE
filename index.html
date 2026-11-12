@@ -89,21 +89,7 @@ button,input,select,textarea{font:inherit}button{border:0;border-radius:11px;pad
 </main>
 <div class="footer">REMOTE CHOICE · HTML / CSS / JavaScript · Firebase Realtime Database</div>
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getDatabase,ref,get,set,update,remove,push,onValue,onDisconnect,runTransaction,serverTimestamp,query,limitToLast} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-// Firebase 설정: 사용자가 제공한 프로젝트 설정
-const firebaseConfig={
- apiKey:"AIzaSyDArGtDypSSmWo6BiTHdQBaK5JeIkN0v14",
- authDomain:"miniboardgame-25324.firebaseapp.com",
- databaseURL:"https://miniboardgame-25324-default-rtdb.asia-southeast1.firebasedatabase.app",
- projectId:"miniboardgame-25324",
- storageBucket:"miniboardgame-25324.firebasestorage.app",
- messagingSenderId:"937903418490",
- appId:"1:937903418490:web:723c9d64bdecb0fe0c5fc3"
-};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);
 const $=id=>document.getElementById(id);
 const state={uid:null,room:null,role:null,ownerUid:null,public:null,settings:null,members:{},signals:{},pending:{},events:{},notices:{},stats:null,round:1,unsubs:[],roundUnsubs:[],selected:null,startedAt:0,clock:null,presenceUnsub:null,pingUnsub:null,lastNoticeCount:0,lastEventCount:0,randomOrder:[],statsWriteBusy:false};
 const roleNames={output:"출력자",input:"입력자",viewer:"관전자"};
